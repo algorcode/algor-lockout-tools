@@ -1,0 +1,9 @@
+## Interface: 30400
+## Title: AlgorLockoutTools
+## Notes: Addon that provides tools to display, manage, and share your lockout info.
+## Author: Algor
+## Version 1.0
+
+# Core
+main.lua
+comms.lua
