@@ -1,2 +1,1 @@
-local lockedRaids = {};
-local lockedDungeons = {};
+local test = '123';
