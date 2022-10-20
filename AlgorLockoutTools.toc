@@ -6,4 +6,5 @@
 
 # Core
 main.lua
+lockoutData.lua
 comms.lua

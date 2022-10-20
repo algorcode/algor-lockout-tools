@@ -1,24 +1,36 @@
-local lockoutToolsFrame = CreateFrame('FRAME', nil, UIParent);
-lockoutToolsFrame:SetWidth(600);
-lockoutToolsFrame:SetHeight(400);
-lockoutToolsFrame:SetPoint('CENTER', 0, 0);
-lockoutToolsFrame:RegisterEvent('PLAYER_ENTERING_WORLD');
-lockoutToolsFrame:RegisterEvent('ADDON_LOADED');
+AlgorLockoutTools = {};
+AlgorLockoutTools.raidLockouts = {};
+AlgorLockoutTools.dungeonLockouts = {};
+AlgorLockoutTools.savedLockoutData = {};
 
-local function onLoad(self, event)
-    local raidLockouts = {};
-    local dungeonLockouts = {};
+C_ChatInfo.RegisterAddonMessagePrefix('ALT_Data');
 
-    local savedInstances = GetNumSavedInstances();
-
-    for i=1,savedInstances do
-        print(i);
-        local name, id, reset, difficulty, locked, extended,
-        instanceIDMostSig, isRaid, maxPlayers, difficultyName,
-        numEncounters, encounterProgress = GetSavedInstanceInfo(i);
-        print(name .. ': ' .. difficulty) .. ', ' .. encounterProgress .. '/' .. numEncounters;
+function AlgorLockoutTools:tableToString(t)
+    local outputStr = '';
+    for _, mt in pairs(t) do
+      local str = '';
+      local tableCount = 0;
+      for _ in pairs(mt) do tableCount = tableCount + 1; end
+      for i, v in ipairs(mt) do
+        if i ~= tableCount then
+          str = str .. v .. ',';
+        else
+          str = str .. v .. ';';
+        end
+      end
+      outputStr = outputStr .. str;
     end
-    
-end
+    return outputStr
+  end
 
-lockoutToolsFrame:SetScript("OnEvent", onLoad);
+  function AlgorLockoutTools:stringToTable(str)
+    local t = {};
+    for s in string.gmatch(str, '([^#]+)') do
+      local ot = {};
+      for c in string.gmatch(s, '([^,]+)') do
+        table.insert(ot, c);
+      end
+      table.insert(t, ot);
+    end
+    return t;
+  end
